@@ -4,6 +4,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.security.Principal;
 
 @RestController
@@ -11,9 +13,12 @@ import java.security.Principal;
 public class HomeController {
 
     @GetMapping("/principal")
-    public Principal user(Principal principal) {
+    public Principal user(HttpServletRequest httpServletRequest, Principal principal) {
+        String name = principal.getName();
+        httpServletRequest.getSession().setAttribute("username", name);
         return principal;
     }
+
     @GetMapping
     public String hello() {
         return "Hello World";

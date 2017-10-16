@@ -28,7 +28,7 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
     private SecurityFailureHandler securityFailureHandler;
 
     @Override
-    protected void configure(HttpSecurity http) throws Exception { // @formatter:off
+    protected void configure(HttpSecurity http) throws Exception {
         http.requestMatchers()
                 .antMatchers("/login", "/oauth/authorize", "/dialog/oauth")
                 .and()
@@ -37,18 +37,16 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
                 .authenticated()
                 .and()
                 .formLogin()
-//                .loginPage("/login")
+                .loginPage("/login")
                 .permitAll();
-    } // @formatter:on
+    }
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception { // @formatter:off
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.parentAuthenticationManager(authenticationManager)
                 .inMemoryAuthentication()
                 .withUser("romas")
                 .password("123")
                 .roles("USER");
-
-
-    } // @formatter:on
+    }
 }
