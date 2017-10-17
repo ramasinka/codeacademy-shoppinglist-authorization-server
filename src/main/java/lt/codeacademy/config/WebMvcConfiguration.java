@@ -11,10 +11,9 @@ import org.springframework.web.servlet.config.annotation.*;
 public class WebMvcConfiguration extends WebMvcConfigurerAdapter {
 
     private static final String[] CLASSPATH_RESOURCE_LOCATIONS = {
-            "classpath:/META-INF/resources/",
-            "classpath:/resources/",
-            "classpath:/static/",
-            "classpath:/public/"
+            "classpath:/resources/**",
+            "classpath:/static/**",
+            "classpath:/public/**"
     };
 
     @Override
@@ -30,7 +29,7 @@ public class WebMvcConfiguration extends WebMvcConfigurerAdapter {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/login/**", "/")
+        registry.addResourceHandler("/static/**", "/login/**")
                 .addResourceLocations(CLASSPATH_RESOURCE_LOCATIONS);
     }
 

@@ -1,0 +1,57 @@
+server:
+    context-path: /auth
+    port: 8081
+    session:
+      cookie:
+        name: UI2SESSION
+
+security:
+  oauth2:
+    client:
+      client-id: ClientId
+      client-secret: secret
+      scope: read,write
+      auto-approve-scopes: '.*'
+
+facebook:
+  client:
+    clientId: 1469462513136640
+    clientSecret: b6fbb59d07dde2bf71eb70088438d2dc
+    accessTokenUri: https://graph.facebook.com/oauth/access_token
+    userAuthorizationUri: https://www.facebook.com/dialog/oauth
+    tokenName: oauth_token
+    authenticationScheme: query
+    clientAuthenticationScheme: form
+  resource:
+    userInfoUri: https://graph.facebook.com/me
+github:
+  client:
+    clientId: d205b0de049ab3281132
+    clientSecret: 9e99be761fbeb57b84b3f374b4e8a28f85a6d34c
+    accessTokenUri: https://github.com/login/oauth/access_token
+    userAuthorizationUri: https://github.com/login/oauth/authorize
+    clientAuthenticationScheme: form
+  resource:
+    userInfoUri: https://api.github.com/user
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+
+
+spring:
+  thymeleaf:
+    cache: false
+
+
+
+
+#security.basic.enabled=false
+#
+##spring.datasource.url=jdbc:postgresql://localhost:5432/postgres?currentSchema=codeacademy
+##spring.datasource.driver-class-name=org.postgresql.Driver
+##spring.datasource.username=postgres
+##spring.datasource.password=codeacademy
+##logging.level.org.springframework=DEBUG
+#spring.social.facebook.appId=1469462513136640
+#spring.social.facebook.appSecret=b6fbb59d07dde2bf71eb70088438d2dc
