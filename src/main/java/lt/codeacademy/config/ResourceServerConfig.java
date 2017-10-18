@@ -20,10 +20,13 @@ import org.springframework.security.oauth2.client.token.grant.code.Authorization
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.filter.CompositeFilter;
 
 import javax.annotation.Resource;
 import javax.servlet.Filter;
+import javax.servlet.http.Cookie;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,23 +46,38 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .requestMatchers()
-                .antMatchers("/login/**", "/oauth/authorize", "/dialog/oauth", "/signin/**", "/signup/**")
+                .antMatchers("/login/**", "/logout/**", "/oauth/authorize", "/dialog/oauth", "/signin/**", "/signup/**")
                 .and()
                 .authorizeRequests()
-                .antMatchers("/login/**", "/signin/**", "/signup/**").permitAll()
+                .antMatchers("/login/**", "/signin/**", "/signup/**", "/logout").permitAll()
                 .anyRequest()
                 .authenticated()
-                .and()
-                .formLogin()
-                .loginPage("/login")
+                .and().formLogin().loginPage("/login").permitAll()
+                .and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                .deleteCookies("UI2SESSION")
+                .addLogoutHandler((req, res, authentication) -> {
+                    Cookie[] cookies = req.getCookies();
+                    if (cookies != null) {
+                        for (Cookie cookie : cookies) {
+                            cookie.setPath("/login");
+                            cookie.setHttpOnly(true);
+                            cookie.setMaxAge(0);
+                            cookie.setValue("");
+                            res.addCookie(cookie);
+                        }
+                    }
+                    try {
+                        res.sendRedirect(req.getHeader("Referer"));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                })
                 .permitAll()
                 .and()
 //                .csrf()
 //                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).and()
                 .addFilterBefore(ssoFilter(), BasicAuthenticationFilter.class);
-
     }
-
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {

@@ -21,9 +21,12 @@ public class SecuritySuccessHandler implements AuthenticationSuccessHandler {
 //    private UserRepository userRepository;
 
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
 
-        HttpSession session = httpServletRequest.getSession();
+        StringBuffer requestURL = request.getRequestURL();
+        System.out.println(requestURL);
+
+        HttpSession session = request.getSession();
         User authUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         String userName = authUser.getUsername();
@@ -33,7 +36,6 @@ public class SecuritySuccessHandler implements AuthenticationSuccessHandler {
 //        session.setAttribute("userid", userId);
         session.setAttribute("user", authUser);
 
-        String redirect_uri = httpServletRequest.getParameter("redirect_uri");
-        httpServletResponse.sendRedirect("http://localhost:8083/main");
+        response.sendRedirect(request.getHeader("referer"));
     }
 }
