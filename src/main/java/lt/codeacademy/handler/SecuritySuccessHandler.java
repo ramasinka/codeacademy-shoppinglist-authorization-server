@@ -1,6 +1,10 @@
 package lt.codeacademy.handler;
 
 //import lt.codeacademy.dao.UserRepository;
+
+import lt.codeacademy.config.tokens.CookieUtils;
+import lt.codeacademy.config.tokens.
+        JwtUtil;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -17,8 +21,10 @@ import java.io.IOException;
 @Component
 public class SecuritySuccessHandler implements AuthenticationSuccessHandler {
 
-//    @Resource
+    //    @Resource
 //    private UserRepository userRepository;
+    static final String jwtCokkiename = "token";
+    static final String signinkey = "signingKey";
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -30,12 +36,10 @@ public class SecuritySuccessHandler implements AuthenticationSuccessHandler {
         User authUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         String userName = authUser.getUsername();
-//        long userId = userRepository.findUserByNameAndPassword(userName, authUser.getPassword()).getId();
 
         session.setAttribute("username", userName);
-//        session.setAttribute("userid", userId);
         session.setAttribute("user", authUser);
 
-        response.sendRedirect(request.getHeader("referer"));
+//        response.sendRedirect("http://localhost:8084/main");
     }
 }

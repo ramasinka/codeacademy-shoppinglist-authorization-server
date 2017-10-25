@@ -1,5 +1,6 @@
 package lt.codeacademy.config;
 
+import lt.codeacademy.handler.SecuritySuccessHandler;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.ResourceServerProperties;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.UserInfoTokenServices;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -20,6 +21,7 @@ import org.springframework.security.oauth2.client.token.grant.code.Authorization
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.filter.CompositeFilter;
 
@@ -42,6 +44,9 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
     @Resource
     private AuthenticationManager authenticationManager;
 
+    @Resource
+    private SecuritySuccessHandler securitySuccessHandler;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -52,7 +57,9 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/login/**", "/signin/**", "/signup/**", "/logout").permitAll()
                 .anyRequest()
                 .authenticated()
-                .and().formLogin().loginPage("/login").permitAll()
+                .and().formLogin()
+                .loginPage("/login")
+//                .successHandler(securitySuccessHandler).permitAll()
                 .and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .deleteCookies("UI2SESSION")
                 .addLogoutHandler((req, res, authentication) -> {
@@ -78,6 +85,7 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
 //                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).and()
                 .addFilterBefore(ssoFilter(), BasicAuthenticationFilter.class);
     }
+
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
