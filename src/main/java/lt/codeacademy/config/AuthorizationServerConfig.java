@@ -32,7 +32,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 .secret("secret")
                 .authorizedGrantTypes("authorization_code", "implicit")
                 .scopes("read", "write")
-                .redirectUris("http://localhost:8084/login")
+//                .redirectUris("http://localhost:8084/tokenas")
                 .autoApprove(true);
     }
 

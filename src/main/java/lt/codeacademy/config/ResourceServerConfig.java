@@ -51,7 +51,7 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .requestMatchers()
-                .antMatchers("/login/**", "/logout/**", "/oauth/authorize", "/dialog/oauth", "/signin/**", "/signup/**")
+                .antMatchers("/login/**", "/logout/**", "/oauth/authorize", "/dialog/oauth", "/signin/**", "/signup/**", "/oauth/token")
                 .and()
                 .authorizeRequests()
                 .antMatchers("/login/**", "/signin/**", "/signup/**", "/logout").permitAll()

@@ -1,7 +1,7 @@
 server:
     use-forward-headers: true
     context-path: /auth
-    port: 8081
+    port: 8082
     session:
       cookie:
         name: UI2SESSION
@@ -17,7 +17,13 @@ server:
 #      authorized-grant-types: implicit
 #    resource:
 #      userInfoUri: http://localhost:8084/main
-
+security:
+  oauth2:
+    client:
+      client-id: ClientId
+      client-secret: secret
+      scope: read,write
+      auto-approve-scopes: '.*'
 facebook:
   client:
     clientId: 1469462513136640
