@@ -6,6 +6,9 @@ server:
       cookie:
         name: UI2SESSION
 
+#management:
+#  security:
+#    enabled: false
 #security:
 #  oauth2:
 #    client:
@@ -17,13 +20,13 @@ server:
 #      authorized-grant-types: implicit
 #    resource:
 #      userInfoUri: http://localhost:8084/main
-security:
-  oauth2:
-    client:
-      client-id: ClientId
-      client-secret: secret
-      scope: read,write
-      auto-approve-scopes: '.*'
+#security:
+#  oauth2:
+#    client:
+#      client-id: ClientId
+#      client-secret: secret
+#      scope: read,write
+#      auto-approve-scopes: '.*'
 facebook:
   client:
     clientId: 1469462513136640
@@ -54,6 +57,9 @@ spring:
   thymeleaf:
     cache: false
 
+#security:
+#  basic:
+#    enabled: false
 
 
 
